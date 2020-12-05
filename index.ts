@@ -61,7 +61,11 @@ const app = express();
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.redirect('/metrics');
+});
+
+app.get('/env', (req, res) => {
+  res.contentType('text/plain').send(JSON.stringify(process.env, null, 2));  
 });
 
 app.get('/metrics', (req, res) => {
