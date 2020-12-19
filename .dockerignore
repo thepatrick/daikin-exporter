@@ -2,3 +2,4 @@ node_modules
 start.sh
 .DS_Store
 /dist
+.task

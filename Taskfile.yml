@@ -1,0 +1,41 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+  DC_NODE: docker-compose run --rm node
+  DC_APP: docker-compose run --rm app
+
+tasks:
+  deps:
+    cmds:
+      - "{{.DC_NODE}} npm install"
+    sources:
+      - package.json
+      - package-lock.json
+    generates:
+      - node_modules/**
+
+  lint:
+    cmds:
+      - task: deps
+      - "{{.DC_NODE}} npm run lint"
+  
+  build:
+    cmds:
+      - task: deps
+      - "{{.DC_NODE}} npm run build"
+
+  build-dev:
+    cmds:
+    - docker-compose build app
+    sources:
+    - index.ts
+    - package.json
+    - package-lock.json
+
+  run-dev:
+    cmds:
+      - task: build-dev
+      - "{{.DC_APP}}"

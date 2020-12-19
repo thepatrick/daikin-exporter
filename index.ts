@@ -41,6 +41,8 @@ const getUpdatedValues = (unit: string, uuid: string, outsideTemp: UnitGuage) =>
 
 const registry = new Registry();
 
+collectDefaultMetrics({ register: registry });
+
 // htemp=22.0,hhum=-,otemp=25.0,err=0,cmpfreq=10
 
 const temp: UnitGuage = new Gauge({
@@ -65,7 +67,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/env', (req, res) => {
-  res.contentType('text/plain').send(JSON.stringify(process.env, null, 2));  
+  res.contentType('text/plain').send(JSON.stringify(process.env, null, 2));
 });
 
 app.get('/metrics', (req, res) => {
@@ -73,8 +75,10 @@ app.get('/metrics', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Listening at http://localhost:${port}`);
 });
+
+console.log(`Running on ${process.arch}`);
 
 // GET_BASIC_INFO = '/common/basic_info',
 // GET_MODEL_INFO = '/aircon/get_model_info',
