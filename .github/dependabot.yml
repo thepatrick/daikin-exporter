@@ -1,0 +1,29 @@
+
+---
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "08:30"
+      timezone: "Australia/Sydney"
+    rebase-strategy: "auto"
+    open-pull-requests-limit: 15
+    commit-message:
+      prefix: "build"
+      prefix-development: "chore"
+      include: "scope"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "08:30"
+      timezone: "Australia/Sydney"
+    rebase-strategy: "auto"
+    commit-message:
+      prefix: "build"
+      prefix-development: "chore"
+      include: "scope"
