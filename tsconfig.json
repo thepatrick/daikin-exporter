@@ -1,12 +1,12 @@
 {
+  "extends": "@tsconfig/recommended/tsconfig.json",
+
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
     "outDir": "dist",
     "rootDir": ".",
     "sourceMap": true,
-    "strict": false,
-    "esModuleInterop": true
+    "allowJs": true,
   },
+
   "exclude": [ "node_modules" ]
 }

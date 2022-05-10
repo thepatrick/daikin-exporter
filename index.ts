@@ -52,7 +52,13 @@ const temp: UnitGuage = new Gauge({
   labelNames: ['unit', 'location'],
 });
 
-const run = getUpdatedValues(process.env.AC_IP, process.env.AC_UUID, temp);
+const { AC_IP, AC_UUID } = process.env;
+
+if (AC_IP == null || AC_UUID == null) {
+  throw new Error('AC_IP or AC_UUID not defined');
+}
+
+const run = getUpdatedValues(AC_IP, AC_UUID, temp);
 
 setInterval(() => {
   run().catch((err) => console.log('Error', err));
