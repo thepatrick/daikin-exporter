@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.1",
+    "@tsconfig/node18": "^1.0.0",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.31",
     "@types/node-fetch": "^2.6.1",
