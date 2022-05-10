@@ -2,9 +2,11 @@ import fetch from 'node-fetch';
 import { Agent } from 'https';
 import { collectDefaultMetrics, Gauge, Registry } from 'prom-client';
 import express from 'express';
+import crypto from 'crypto';
 
 const httpsAgent = new Agent({
   rejectUnauthorized: false,
+  secureOptions: crypto.constants.SSL_OP_LEGACY_SERVER_CONNECT,
 });
 
 const parseResponse = (response: string): Record<string, string> =>
