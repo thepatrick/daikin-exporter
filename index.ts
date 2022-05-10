@@ -78,8 +78,8 @@ app.get('/env', (req, res) => {
   res.contentType('text/plain').send(JSON.stringify(process.env, null, 2));
 });
 
-app.get('/metrics', (req, res) => {
-  res.contentType('text/plain').send(registry.metrics());
+app.get('/metrics', async (req, res) => {
+  res.contentType('text/plain').send(await registry.metrics());
 });
 
 app.listen(port, () => {
