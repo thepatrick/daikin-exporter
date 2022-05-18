@@ -1,4 +1,4 @@
-FROM node:18.1.0-alpine3.14
+FROM node:18.2.0-alpine3.14
 
 COPY package.json package-lock.json /app/
 
