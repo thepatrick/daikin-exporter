@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "node-fetch": "^2.6.7",
+    "node-fetch": "^3.2.10",
     "prom-client": "^14.0.1"
   }
 }
