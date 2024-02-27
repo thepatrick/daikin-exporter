@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from 'node-fetch-cjs';
 import { Agent } from 'https';
 import { collectDefaultMetrics, Gauge, Registry } from 'prom-client';
 import express from 'express';
@@ -78,8 +78,13 @@ app.get('/env', (req, res) => {
   res.contentType('text/plain').send(JSON.stringify(process.env, null, 2));
 });
 
-app.get('/metrics', async (req, res) => {
-  res.contentType('text/plain').send(await registry.metrics());
+app.get('/metrics', (req, res) => {
+  (async () => {
+    res.contentType('text/plain').send(await registry.metrics());
+  })().catch((err) => {
+    res.send('Error');
+    console.log('Error', err);
+  });
 });
 
 app.listen(port, () => {
