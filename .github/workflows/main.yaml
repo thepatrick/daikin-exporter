@@ -89,3 +89,12 @@ jobs:
             echo "</details>"
           } >> $GITHUB_STEP_SUMMARY
         fi
+
+    # - uses: imjasonh/setup-crane@v0.3
+
+    # Install Cosign
+    - uses: sigstore/cosign-installer@main
+
+    # Cosign the OCI artifact
+    - name: Sign the OCI artifact
+      run: 'cosign sign ghcr.io/${{ github.repository }}:${{ steps.docker_build.outputs.digest }} -y'
