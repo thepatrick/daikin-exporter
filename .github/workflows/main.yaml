@@ -151,10 +151,21 @@ jobs:
           output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
 
       - name: Scan SBOM
+        id: scan
         uses: anchore/scan-action@v3
         with:
           sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
+          fail-build: true
+          severity-cutoff: high
 
       - uses: anchore/sbom-action/publish-sbom@v0
         with:
           sbom-artifact-match: ".*\\.spdx$"
+
+      - name: 'Attestation (experimental)'
+        run: 'syft attest --output cyclonedx-json ghcr.io/${{github.repository}}@${{needs.up.outputs.digest}}'
+
+      - name: upload Anchore scan SARIF report
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
