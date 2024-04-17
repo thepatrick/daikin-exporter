@@ -97,4 +97,4 @@ jobs:
 
     # Cosign the OCI artifact
     - name: Sign the OCI artifact
-      run: 'cosign sign ghcr.io/${{ github.repository }}:${{ steps.docker_build.outputs.digest }} -y'
+      run: 'cosign sign ghcr.io/${{ github.repository }}:sha-${{ github.sha }} -y'
