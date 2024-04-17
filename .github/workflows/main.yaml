@@ -4,15 +4,15 @@ on:
     branches:
       - main
 
-permissions:
+# permissions:
 #   actions: read|write|none
 #   checks: read|write|none
-  contents: write # for SBOM (read|write|none)
+#   contents: read|write|none
 #   deployments: read|write|none
 #   id-token: read|write|none
 #   issues: read|write|none
 #   discussions: read|write|none
-  packages: write
+#   packages: read|write|none
 #   pages: read|write|none
 #   pull-requests: read|write|none
 #   repository-projects: read|write|none
@@ -25,6 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
+    permissions:
+      contents: read
+      packages: write
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -132,6 +135,7 @@ jobs:
     needs: up
     permissions:
       id-token: write
+      contents: write
       packages: write
     steps:
       - name: Login to GitHub Container Registry
