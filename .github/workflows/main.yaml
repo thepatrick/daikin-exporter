@@ -9,7 +9,7 @@ permissions:
 #   checks: read|write|none
   contents: write # for SBOM (read|write|none)
 #   deployments: read|write|none
-#   id-token: read|write|none
+  id-token: write # for cosign
 #   issues: read|write|none
 #   discussions: read|write|none
   packages: write
