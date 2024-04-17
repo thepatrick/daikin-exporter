@@ -7,7 +7,7 @@ on:
 permissions:
 #   actions: read|write|none
 #   checks: read|write|none
-#   contents: read|write|none
+  contents: write # for SBOM (read|write|none)
 #   deployments: read|write|none
 #   id-token: read|write|none
 #   issues: read|write|none
@@ -57,6 +57,15 @@ jobs:
         labels: ${{ steps.docker_meta.outputs.labels }}
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
+
+    - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
+      uses: aquasecurity/trivy-action@master
+      with:
+        format: 'github'
+        output: 'dependency-results.sbom.json'
+        image-ref: 'ghcr.io/${{ github.repository }}:sha-${{ github.sha }}'
+        github-pat: ${{ secrets.GITHUB_TOKEN }} # or ${{ secrets.github_pat_name }} if you're using a PAT
+
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@0.19.0
       with:
