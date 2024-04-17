@@ -23,6 +23,8 @@ jobs:
   up:
     name: Package
     runs-on: ubuntu-latest
+    outputs:
+      digest: ${{ steps.docker_build.outputs.digest }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -58,14 +60,24 @@ jobs:
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
 
-    - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
-      uses: aquasecurity/trivy-action@master
-      with:
-        format: 'github'
-        output: 'dependency-results.sbom.json'
-        image-ref: 'ghcr.io/${{ github.repository }}:sha-${{ github.sha }}'
-        github-pat: ${{ secrets.GITHUB_TOKEN }} # or ${{ secrets.github_pat_name }} if you're using a PAT
+  github-dependency-graph:
+    runs-on: ubuntu-latest
+    needs: up
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
+        uses: aquasecurity/trivy-action@0.19.0
+        with:
+          format: 'github'
+          output: 'dependency-results.sbom.json'
+          image-ref: 'ghcr.io/${{ github.repository }}:sha-${{ github.sha }}'
+          github-pat: ${{ secrets.GITHUB_TOKEN }} # or ${{ secrets.github_pat_name }} if you're using a PAT
 
+  show-high-vulnerabilities:
+    runs-on: ubuntu-latest
+    needs: up
+    steps:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@0.19.0
       with:
@@ -90,11 +102,13 @@ jobs:
           } >> $GITHUB_STEP_SUMMARY
         fi
 
-    # - uses: imjasonh/setup-crane@v0.3
+  sign:
+    runs-on: ubuntu-latest
+    needs: up
+    steps:
+      # Install Cosign
+      - uses: sigstore/cosign-installer@main
 
-    # Install Cosign
-    - uses: sigstore/cosign-installer@main
-
-    # Cosign the OCI artifact
-    - name: Sign the OCI artifact
-      run: 'cosign sign ghcr.io/${{ github.repository }}:sha-${{ github.sha }} -y'
+      # Cosign the OCI artifact
+      - name: Sign the OCI artifact
+        run: 'cosign sign ghcr.io/${{github.repository}}@${{needs.up.outputs.digest}} -y'
