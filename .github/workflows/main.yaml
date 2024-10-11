@@ -59,7 +59,7 @@ jobs:
 
     - name: Build and push
       id: docker_build
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         platforms: linux/amd64,linux/arm64
         push: ${{ github.event_name != 'pull_request' }}
@@ -77,7 +77,7 @@ jobs:
       packages: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
         uses: aquasecurity/trivy-action@0.19.0
@@ -145,7 +145,7 @@ jobs:
 
       - name: Scan SBOM
         id: scan
-        uses: anchore/scan-action@v3
+        uses: anchore/scan-action@v5
         with:
           sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
           fail-build: true
