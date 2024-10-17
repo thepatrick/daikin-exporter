@@ -2,7 +2,7 @@
 version: '3'
 services:
   node:
-    image: node:20.12.2-alpine
+    image: node:20.18.0-alpine
     volumes:
       - .:/opt/app
     working_dir: /opt/app
