@@ -80,7 +80,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
-        uses: aquasecurity/trivy-action@0.19.0
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           format: 'github'
           output: 'dependency-results.sbom.json'
@@ -92,7 +92,7 @@ jobs:
     needs: up
     steps:
     - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@0.19.0
+      uses: aquasecurity/trivy-action@0.28.0
       with:
         image-ref: 'ghcr.io/${{ github.repository }}:sha-${{ github.sha }}'
         format: 'table'
